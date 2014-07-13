@@ -34,10 +34,11 @@ def register(PluginClass):
     if getattr(PluginClass, 'sidebar', None):
         _sidebar.append(plugin)
 
-    _markdown_extensions.extend(getattr(PluginClass, 'markdown_extensions', []))        
+    _markdown_extensions.extend(getattr(PluginClass, 'markdown_extensions', []))
     
 def get_plugins():
     """Get loaded plugins - do not call before all plugins are loaded."""
+    print 'get_plugins', _cache
     return _cache
 
 def get_markdown_extensions():

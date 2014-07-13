@@ -23,6 +23,9 @@ class AttachmentView(ArticleMixin, FormView):
     
     @method_decorator(get_article(can_read=True))
     def dispatch(self, request, article, *args, **kwargs):
+        # START added by Danny Browne
+        self.request = request
+        # END added by Danny Browne
         if article.can_moderate(request.user):
             self.attachments = models.Attachment.objects.filter(
                 articles=article, current_revision__deleted=False
@@ -54,6 +57,7 @@ class AttachmentView(ArticleMixin, FormView):
     
     def get_form_kwargs(self):
         kwargs = FormView.get_form_kwargs(self)
+        print 'attachments kwargs', kwargs
         kwargs['article'] = self.article
         kwargs['request'] = self.request
         return kwargs

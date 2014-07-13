@@ -15,7 +15,7 @@
       <tr>
         <th colspan="4">
           <h4 style="margin-top:0;">
-            <a href="{% url 'wiki:attachments_download' path=urlpath.path article_id=article.id attachment_id=attachment.id %}">{{ attachment.current_revision.get_filename }}</a>
+            <a href="{% url 'wiki:attachments_download' attachment_id=attachment.id %}">{{ attachment.current_revision.get_filename }}</a>
             <span class="badge">{{ attachment.current_revision.created|naturaltime }}</span>
             {% if attachment.current_revision.deleted %}
             <span class="badge badge-important">{% trans "deleted" %}</span>

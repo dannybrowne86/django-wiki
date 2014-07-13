@@ -2,6 +2,8 @@ from django.conf.urls import patterns, url
 
 from wiki.plugins.attachments import views
 
+print 'HERE I AM IMPORTING THE ATTACHMENTS URLS'
+
 urlpatterns = patterns('',
     url(r'^$', views.AttachmentView.as_view(), name='attachments_index'),
     url(r'^search/$', views.AttachmentSearchView.as_view(), name='attachments_search'),
@@ -13,3 +15,5 @@ urlpatterns = patterns('',
     url(r'^download/(?P<attachment_id>\d+)/revision/(?P<revision_id>\d+)/$', views.AttachmentDownloadView.as_view(), name='attachments_download'),
     url(r'^change/(?P<attachment_id>\d+)/revision/(?P<revision_id>\d+)/$', views.AttachmentChangeRevisionView.as_view(), name='attachments_revision_change'),
 )
+
+print 'attachment urls', urlpatterns

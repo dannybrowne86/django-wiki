@@ -7,6 +7,9 @@ from wiki.core.plugins import registry
 from wiki.views import article, accounts
 from wiki.core.utils import get_class_from_str
 
+# plugins stuff
+from wiki.plugins.attachments import views as attachment_views
+
 
 class WikiURLPatterns(object):
     '''
@@ -46,6 +49,7 @@ class WikiURLPatterns(object):
         urlpatterns += self.get_revision_urls()
         urlpatterns += self.get_article_urls()
         urlpatterns += self.get_plugin_urls()
+        urlpatterns += self.get_attachments_urls()
 
         # This ALWAYS has to be the last of all the patterns since
         # the paths in theory could wrongly match other targets.
@@ -117,6 +121,15 @@ class WikiURLPatterns(object):
         return urlpatterns
 
     def get_plugin_urls(self):
+        # DANNY BROWNE
+        # for some reason, the plug-in registry is not persisting the registered plug-ins
+        # so, in order to get my instance to work, I'm going to hard code the registration here
+        print 'load plugins again', registry.get_plugins().values()
+        from wiki.core.plugins.loader import load_wiki_plugins
+        load_wiki_plugins()
+        print 'done loading', registry.get_plugins().values()
+        # end DANNY BROWNE
+
         urlpatterns = patterns('',)
         for plugin in registry.get_plugins().values():
             slug = getattr(plugin, 'slug', None)
@@ -131,6 +144,22 @@ class WikiURLPatterns(object):
                     url('^_plugin/' + slug + '/', include(root_urlpatterns)),
                )
         return urlpatterns
+
+    def get_attachments_urls(self):
+        urlpatterns = patterns('',
+            url(r'^attachments/$', attachment_views.AttachmentView.as_view(), name='attachments_index'),
+            url(r'^attachments/search/$', attachment_views.AttachmentSearchView.as_view(), name='attachments_search'),
+            url(r'^attachments/add/(?P<attachment_id>\d+)/$', attachment_views.AttachmentAddView.as_view(), name='attachments_add'),
+            url(r'^attachments/replace/(?P<attachment_id>\d+)/$', attachment_views.AttachmentReplaceView.as_view(), name='attachments_replace'),
+            url(r'^attachments/history/(?P<attachment_id>\d+)/$', attachment_views.AttachmentHistoryView.as_view(), name='attachments_history'),
+            url(r'^attachments/download/(?P<attachment_id>\d+)/$', attachment_views.AttachmentDownloadView.as_view(), name='attachments_download'),
+            url(r'^attachments/delete/(?P<attachment_id>\d+)/$', attachment_views.AttachmentDeleteView.as_view(), name='attachments_delete'),
+            url(r'^attachments/download/(?P<attachment_id>\d+)/revision/(?P<revision_id>\d+)/$', attachment_views.AttachmentDownloadView.as_view(), name='attachments_download'),
+            url(r'^attachments/change/(?P<attachment_id>\d+)/revision/(?P<revision_id>\d+)/$', attachment_views.AttachmentChangeRevisionView.as_view(), name='attachments_revision_change'),
+        )
+
+        return attachment_views
+
 
 def get_pattern(app_name="wiki", namespace="wiki", url_config_class=None):
     """Every url resolution takes place as "wiki:view_name".

@@ -45,6 +45,6 @@ class AttachmentPlugin(BasePlugin):
     def __init__(self):
         #print "I WAS LOADED!"
         pass
-    
+print 'registering the AttachmentPlugin'
 registry.register(AttachmentPlugin)
 
