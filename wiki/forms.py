@@ -304,8 +304,9 @@ class PermissionsForm(PluginSettingsFormMixin, forms.ModelForm):
     settings_order = 5
     settings_write_access = False
 
-    owner_username = forms.CharField(required=False, label=_(u'Owner'),
-                                     help_text=_(u'Enter the username of the owner.'))
+    owner_username = forms.CharField(required=False, label=_(u'Article Creator'),
+                                     help_text=_(u'Enter the username of the owner.'),
+                                     widget=forms.TextInput(attrs={'readonly':'readonly'}))
     group = forms.ModelChoiceField(models.Group.objects.all(), empty_label=_(u'(none)'),
                                      label=_(u'Group'), required=False)
     if settings.USE_BOOTSTRAP_SELECT_WIDGET:
@@ -365,14 +366,14 @@ class PermissionsForm(PluginSettingsFormMixin, forms.ModelForm):
             self.fields['recursive_owner'].widget = forms.HiddenInput()
             self.fields['locked'].widget = forms.HiddenInput()
         
-        self.fields['owner_username'].initial = article.owner.username if article.owner else ""
+        self.fields['owner_username'].initial = article.owner.email if article.owner else ""
     
     def clean_owner_username(self):
         if self.can_assign:
             username = self.cleaned_data['owner_username']
             if username:
                 try:
-                    user = User.objects.get(username=username)
+                    user = User.objects.get(email=username)
                 except User.DoesNotExist:
                     raise forms.ValidationError(_(u'No user with that username'))
             else:
