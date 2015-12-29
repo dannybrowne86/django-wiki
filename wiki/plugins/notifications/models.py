@@ -32,8 +32,8 @@ class ArticleSubscription(ArticlePlugin):
 
     class Meta:
         unique_together = ('subscription', 'articleplugin_ptr')
-        # Matches label of upcoming 0.1 release
-        # db_table = 'wiki_notifications_articlesubscription'
+        # Matches label of old 0.0.23 release
+        db_table = 'wiki_articlesubscription'
         # if settings.APP_LABEL:
         #     app_label = settings.APP_LABEL
 

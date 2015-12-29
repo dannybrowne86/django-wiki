@@ -56,8 +56,8 @@ class Attachment(ReusablePlugin):
     class Meta:
         verbose_name = _('attachment')
         verbose_name_plural = _('attachments')
-        # Matches label of upcoming 0.1 release
-        # db_table = 'wiki_attachments_attachment'
+        # Matches label of old 0.0.23 release
+        db_table = 'wiki_attachment'
         # if settings.APP_LABEL:
         #     app_label = settings.APP_LABEL
 
@@ -137,8 +137,8 @@ class AttachmentRevision(BaseRevisionMixin, models.Model):
         verbose_name_plural = _('attachment revisions')
         ordering = ('created',)
         get_latest_by = 'revision_number'
-        # Matches label of upcoming 0.1 release
-        # db_table = 'wiki_attachments_attachmentrevision'
+        # Matches label of old 0.0.23 release
+        db_table = 'wiki_attachmentrevision'
         # if settings.APP_LABEL:
         #     app_label = settings.APP_LABEL
 
