@@ -33,9 +33,9 @@ class ArticleSubscription(ArticlePlugin):
     class Meta:
         unique_together = ('subscription', 'articleplugin_ptr')
         # Matches label of upcoming 0.1 release
-        db_table = 'wiki_notifications_articlesubscription'
-        if settings.APP_LABEL:
-            app_label = settings.APP_LABEL
+        # db_table = 'wiki_notifications_articlesubscription'
+        # if settings.APP_LABEL:
+        #     app_label = settings.APP_LABEL
 
 
 def default_url(article, urlpath=None):
