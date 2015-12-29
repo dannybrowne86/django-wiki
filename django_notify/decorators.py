@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-from django.utils import simplejson as json
+#from django.utils import simplejson as json
+import json
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 

@@ -321,6 +321,9 @@ class PermissionsForm(PluginSettingsFormMixin, forms.ModelForm):
     recursive_group = forms.BooleanField(label=_(u'Inherit group'), help_text=_(u'Check here to apply the group setting recursively to articles below this one.'),
                                          required=False)
 
+    class Meta:
+        exclude = ()
+
     def get_usermessage(self):
         if self.changed_data:
             return _('Permission settings for the article were updated.')
