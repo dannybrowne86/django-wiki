@@ -1,9 +1,10 @@
+from __future__ import absolute_import
+from __future__ import unicode_literals
 # -*- coding: utf-8 -*-
 from os import path as os_path
 PROJECT_PATH = os_path.abspath(os_path.split(os_path.dirname(__file__))[0])
 
 DEBUG = True
-TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
     # ('Your Name', 'your_email@example.com'),
@@ -13,8 +14,10 @@ MANAGERS = ADMINS
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': os_path.join(PROJECT_PATH, 'db', 'prepopulated.db'),                      # Or path to database file if using sqlite3.
+        # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
+        'ENGINE': 'django.db.backends.sqlite3',
+        # Or path to database file if using sqlite3.
+        'NAME': 'prepopulated.db',
     }
 }
 
@@ -40,13 +43,7 @@ STATICFILES_DIRS = (
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-#    'django.contrib.staticfiles.finders.DefaultStorageFinder',
-)
-
-TEMPLATE_LOADERS = (
-    'django.template.loaders.filesystem.Loader',
-    'django.template.loaders.app_directories.Loader',
-#     'django.template.loaders.eggs.Loader',
+    #    'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
 
 MIDDLEWARE_CLASSES = [
@@ -64,22 +61,32 @@ ROOT_URLCONF = 'testproject.urls'
 # Python dotted path to the WSGI application used by Django's runserver.
 WSGI_APPLICATION = 'testproject.wsgi.application'
 
-TEMPLATE_DIRS = (
-    os_path.join(PROJECT_PATH, 'templates'),
-)
-
-TEMPLATE_CONTEXT_PROCESSORS = [
-    'django.contrib.auth.context_processors.auth',
-    'django.core.context_processors.debug',
-    'django.core.context_processors.i18n',
-    'django.core.context_processors.media',
-    'django.core.context_processors.static',
-    'django.core.context_processors.tz',
-    'django.core.context_processors.debug',
-    'django.core.context_processors.request',
-    'django.contrib.messages.context_processors.messages',
-    'sekizai.context_processors.sekizai',
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'APP_DIRS': True,
+        'DIRS': (os_path.join(PROJECT_PATH, 'templates'),),
+        'OPTIONS': {
+            'context_processors': [
+                "django.contrib.auth.context_processors.auth",
+                "django.template.context_processors.debug",
+                "django.template.context_processors.i18n",
+                "django.template.context_processors.media",
+                "django.template.context_processors.request",
+                "django.template.context_processors.static",
+                "django.template.context_processors.tz",
+                "django.contrib.messages.context_processors.messages",
+                "sekizai.context_processors.sekizai",
+            ],
+            'debug': DEBUG,
+        }
+    },
 ]
+
+# Setting this dynamically:
+# for template_engine in TEMPLATES:
+#    template_engine['OPTIONS']['debug'] = True
+
 
 INSTALLED_APPS = [
     'django.contrib.humanize',
@@ -91,10 +98,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.admin',
     'django.contrib.admindocs',
-    'south',
     'sekizai',
     'sorl.thumbnail',
-    'django_notify',
+    'django_nyt',
     'wiki',
     'wiki.plugins.macros',
     'wiki.plugins.help',
@@ -104,6 +110,11 @@ INSTALLED_APPS = [
     'wiki.plugins.notifications',
     'mptt',
 ]
+from django import VERSION
+if VERSION < (1, 7):
+    INSTALLED_APPS.append('south')
+else:
+    TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
@@ -144,7 +155,7 @@ LOGIN_REDIRECT_URL = reverse_lazy('wiki:get', kwargs={'path': ''})
 
 
 try:
-    import debug_toolbar #@UnusedImport
+    import debug_toolbar  # @UnusedImport
     MIDDLEWARE_CLASSES = list(MIDDLEWARE_CLASSES) + [
         'debug_toolbar.middleware.DebugToolbarMiddleware',
     ]
@@ -162,4 +173,3 @@ try:
     from testproject.settings.local import *
 except ImportError:
     pass
-
