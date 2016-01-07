@@ -21,7 +21,8 @@ from wiki.plugins.notifications.util import get_title
 @python_2_unicode_compatible
 class ArticleSubscription(ArticlePlugin):
 
-    subscription = models.OneToOneField(Subscription)
+    subscription = models.OneToOneField(Subscription,
+        db_column='subscription_ptr_id')
 
     def __str__(self):
         title = (_("%(user)s subscribing to %(article)s (%(type)s)") %
