@@ -36,7 +36,7 @@
         {% block wiki_header_branding %}
         <a class="navbar-brand" href="/">FirmBase</a>
         {% endblock %}
-        <div class="nav-collapse collapse navbar-responsive-collapse">
+        <div class="navbar-responsive-collapse">
           <form class="navbar-form pull-right-block-on-responsive" id="wiki-search-form" method="GET" action="{% url 'wiki:search' %}">
             <div class="input-group">
               <input type="search" class="form-control search-query" name="q" placeholder="{% trans "Search..." %}" />
