@@ -55,7 +55,7 @@ def post_article_revision_save(**kwargs):
             notify(
                 _('Article deleted: %s') %
                 get_title(instance),
-                settings.ARTICLE_EDIT,
+                str(settings.ARTICLE_EDIT),
                 target_object=instance.article,
                 url=url,
                 filter_exclude=filter_exclude)
@@ -63,7 +63,7 @@ def post_article_revision_save(**kwargs):
             notify(
                 _('Article modified: %s') %
                 get_title(instance),
-                settings.ARTICLE_EDIT,
+                str(settings.ARTICLE_EDIT),
                 target_object=instance.article,
                 url=url,
                 filter_exclude=filter_exclude)
@@ -71,7 +71,7 @@ def post_article_revision_save(**kwargs):
             notify(
                 _('New article created: %s') %
                 get_title(instance),
-                settings.ARTICLE_EDIT,
+                str(settings.ARTICLE_EDIT),
                 target_object=instance,
                 url=url,
                 filter_exclude=filter_exclude)
